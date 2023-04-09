@@ -1,0 +1,21 @@
+<!--Components/table/table.wxml--> 
+<view class="dialog_content {{showHint?'show':''}} flex_column flex_center" >
+  <text bindtap="doCopy"   style="width: 70vw;font-size: 15px;">{{showHint}}</text>
+</view>
+<view class="flex_row">
+  <view class="flex_row" style="width: 6vw;background: #efefef;position: absolute;height: 100%;">
+    <image bindtap="doShowMenu"  src="/images/ic_custor.png" mode="aspectFit" style="width: 5vw;height: 5vw;transition: all .5s;transform:translateY(calc({{curIndex * 12 + 3.5}}vw + {{curIndex}}px))"></image>
+  </view>
+  <view class="table flex_column" style="overflow: scroll;margin-left: 6vw;">
+    <block wx:if="{{table.length > 0}}">
+      <view bindtap="doChangeCurIndex" data-index="{{index}}" wx:for="{{table}}" wx:key="index" class="table_row flex_row flex_vcenter">
+        <view bindlongpress="doShowData" data-data="{{each}}" wx:for="{{item}}" wx:key="each" wx:for-item="each" wx:for-index="i" class="flex_column flex_center">
+          <text class="table_cell">{{each}}</text>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <text style="font-size: 17px;color: #afadad;">暂无数据</text>
+    </block>
+  </view>
+</view>

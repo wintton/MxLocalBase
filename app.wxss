@@ -1,0 +1,33 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+
+.flex_column{
+  display: flex;
+  flex-direction: column;
+}
+.flex_row{
+  display: flex;
+  flex-direction: row;
+}
+.flex_center{
+  align-items: center;
+  justify-content: center;
+}
+.flex_vcenter{
+  align-items: center;
+}
+.flex_hcenter{ 
+  justify-content: center;
+}
+
+.flex_space{
+   justify-content: space-between;
+}

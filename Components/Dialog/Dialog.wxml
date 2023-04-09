@@ -1,0 +1,24 @@
+<!--Components/Dialog/Dialog.wxml-->
+<view bindtap="doConcel" class="dialog_back"> 
+    <view catchtap="doNothing" class="content  flex_column flex_center {{showanim?'anim_show':''}}"> 
+      <view class="title">{{dialog.title}}</view> 
+      <view wx:if="{{dialog.textcontent}}" class="text_content">
+          {{dialog.textcontent}}
+      </view>
+      <view wx:else  class="text_content">
+        <view wx:for="{{dialog.content}}" wx:key="item" class="item_back flex_row flex_vcenter flex_space" >
+          <view class="left">{{item.title}}</view>
+          <view class="right">
+            <block v-if="{{item.type == 'input'}}">
+              <input class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="opera_back flex_row  flex_space">
+        <text bindtap="doConcel" class="text flex_column flex_center" hidden="{{dialog.hideCancel}}">{{dialog.cancelText || '取消'}}</text>
+        <text bindtap="doConfirm" class="text flex_column flex_center">{{dialog.confirmText || '确认'}}</text>
+      </view>
+    </view>
+
+</view>

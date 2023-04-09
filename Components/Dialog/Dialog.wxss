@@ -1,0 +1,87 @@
+/* Components/Dialog/Dialog.wxss */
+.dialog_back{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+}
+
+.dialog_back .content{
+  width: 80vw;
+  background: #ffffff;
+  border-radius: 10px;
+  min-height: 20vw;
+  margin-top: 30vh;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all .5s;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.content .title{
+  width: 100%;
+  text-align: center;
+  padding: 3vw 0;
+  color: #333333;
+  font-size: 17px;
+  font-weight: bold;
+  border-bottom: 1px solid #d3d1d1;
+} 
+
+.content .text_content{
+  max-width: 76vw; 
+  padding: 5vw 0;
+  text-align: center;
+  font-size: 18px;
+  
+}
+
+.content .opera_back{
+  width: 100%;
+  min-height: 13vw;
+  border-top: 1px solid #d3d1d1;
+}
+
+.content .opera_back .text{
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  font-size: 17px; 
+}
+
+.content .opera_back .text:active{
+  background-color: rgba(197, 195, 195, 0.3);
+}
+
+.content .opera_back .text:first-child{
+    border-right: 1px solid #d3d1d1;
+}
+
+.content .item_back{ 
+  font-size: 16px; 
+}
+
+.content.anim_show{
+  transform: scale(1);
+  opacity: 1;
+}
+
+.item_back .left{
+  width: 40%; 
+} 
+
+.item_back .right{
+  width: 60%;
+}
+
+.item_back .right .input{
+  padding: 2vw 0;
+  margin-left: 5px;
+  border-bottom: 1px solid #d3d1d1;
+  text-align: left;
+}
+@import "/app.wxss";

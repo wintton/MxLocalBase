@@ -1,0 +1,63 @@
+/* pages/mxbaseutil/mxbaseutil.wxss */
+page{
+  background: #efefef;
+}
+.connect_back{
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  position: absolute;
+}
+
+.connect_back input{
+  width: 80vw;
+  padding: 3vw;
+  border: 1px solid rgb(5, 96, 231);
+  border-radius: 10px;
+}
+
+.connect_back button,.btn_add{
+  margin-top: 10vw;
+  background: rgb(5, 96, 231);
+  border-radius: 10px;
+  color: #ffffff;
+  width: 86vw !important;
+}
+
+.connect_back button:active,.btn_add:active{
+  background: rgb(7, 87, 206);
+}
+
+.database_back{
+  width: 76vw;
+  padding: 5vw; 
+  background: #f8f7f7;
+  box-shadow: 2px 2px 5px rgba(5, 96, 231,0.2);
+  margin-top: 5vw;
+  border-radius: 10px;
+}
+
+.small_btn{
+  font-size: 12px;
+  padding:  2vw;
+  border-radius: 5px;
+  color: #ffffff;
+  margin-left: 10px;
+  background: rgb(5, 96, 231);
+}
+
+.small_btn:active{ 
+  background:rgb(7, 87, 206);
+}
+
+
+.database_back:active{
+  background: #dfdddd;
+}
+
+.database_back .title{
+  margin-left: 3vw;
+  font-size: 17px;
+  font-weight: bold;
+  color: #333333;
+}

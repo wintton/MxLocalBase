@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "dialog":"/Components/Dialog/Dialog",
+    "table":"/Components/table/table"
+  },
+  "navigationBarTitleText": "MxBaseSql工具"
+}

@@ -1,0 +1,44 @@
+/* Components/table/table.wxss */
+@import "/app.wxss";
+
+.table {
+  min-width: 90%;
+  border: 1px solid #efefef;
+  min-height: 50vh;  
+  background: #ffffff;
+} 
+
+.table_cell{
+  background: #ffffff;
+  width: 15vw;
+  height: 8vw;
+  padding: 2vw;
+  font-size: 15px;
+  text-align: center;
+  color: #333333;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  overflow: hidden;
+  word-wrap: none;
+  text-overflow:ellipsis; 
+}
+
+.dialog_content{
+  width: 80vw;
+  position: fixed;
+  background: #ffffff;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  min-height: 50vw;
+  z-index: 100;
+  left: 10vw;
+  top: 20vh;
+  transition: all .5s;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.dialog_content.show{
+  opacity: 1;
+  transform: scale(1);
+}
