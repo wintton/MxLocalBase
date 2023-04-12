@@ -108,6 +108,16 @@ class Connect {
     return this.database.showTables();
   }
 
+  doAddTableSet(itemSet){
+    if(!this.isConnect()){
+      throw("当前数据库未连接");
+    }
+    if(!this.isSelectDataBase()){
+      throw("当前未选择数据库");
+    }  
+    return this.database.doAddTableSet(itemSet);
+  }
+
   getCurDataBase(){
     if(!this.isConnect()){
       throw("当前数据库未连接");
@@ -136,6 +146,16 @@ class Connect {
       throw("当前未选择数据库");
     } 
     this.database.deleteTable(tableName);
+  }
+
+  doShowTableSet(tableName){
+    if(!this.isConnect()){
+      throw("当前数据库未连接");
+    }
+    if(!this.isSelectDataBase()){
+      throw("当前未选择数据库");
+    } 
+    return this.database.doShowTableSet(tableName);
   }
 
   closeConnect(){

@@ -1,65 +1,68 @@
 <!--pages/mxbaseutil/mxbaseutil.wxml-->
 <view hidden="{{!dialog.show}}">
-  <dialog  dialog="{{dialog}}" showanim="{{showAnmi}}"></dialog> 
+  <dialog dialog="{{dialog}}" showanim="{{showAnmi}}"></dialog>
 </view>
 <view wx:if="{{isConnct}}" class="flex_column flex_center">
   <view class="flex_row flex_vcenter" style="margin-top: 5vw;width: 86vw;font-size: 13px;color:#6e6e6e;">
-{{curPath + "/"}}{{ curDataBase?curDataBase + "/":""}}{{curTable?curTable + "/":""}}
-  {{curSubItem.type?curSubItem.type + "/":""}}
-      <view bindtap="doClose" wx:if="{{mode == 0}}" class="small_btn">关闭</view> 
-      <view bindtap="doBack" wx:if="{{mode > 0}}" class="small_btn">返回</view>
-  </view> 
-  <view style="width: 86vw;margin-top: 5vw; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);">
-    <table table="{{tableDataShow}}" ></table>
-  </view> 
-  <view wx:if="{{mode == 0}}">
-      <!-- 数据库列表 -->
-      <view bindtap="doSelectDataBase" data-item="{{item}}" wx:for="{{databaseList}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
-        <view class="flex_row flex_center">
-          <image src="/images/ic_databse.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
-          <text class="title">{{item}}</text>
-        </view>
-        <image catchtap="doDeleteBase" data-item="{{item}}" src="/images/ic_delete.png" style="width: 5vw;height: 5vw;" mode="aspectFit"></image>
-      </view>
-      <button bindtap="doAddDataBase" class="btn_add">添加数据库</button>
+    {{curPath + "/"}}{{ curDataBase?curDataBase + "/":""}}{{curTable?curTable + "/":""}}{{curSubItem.type?curSubItem.type + "/":""}}
+    <view bindtap="doClose" wx:if="{{mode == 0}}" class="small_btn">关闭</view>
+    <view bindtap="doBack" wx:if="{{mode > 0}}" class="small_btn">返回</view>
   </view>
-  <view wx:if="{{mode == 1}}">
+  <view wx:if="{{mode == 0}}">
+    <!-- 数据库列表 -->
+    <view bindtap="doSelectDataBase" data-item="{{item}}" wx:for="{{databaseList}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
+      <view class="flex_row flex_center">
+        <image src="/images/ic_databse.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
+        <text class="title">{{item}}</text>
+      </view>
+      <image catchtap="doDeleteBase" data-item="{{item}}" src="/images/ic_delete.png" style="width: 5vw;height: 5vw;" mode="aspectFit"></image>
+    </view>
+    <button bindtap="doAddDataBase" class="btn_add">添加数据库</button>
+  </view>
+  <view wx:elif="{{mode == 1}}">
     <!-- 数据表列表 -->
     <view bindtap="doSelectTable" data-item="{{item}}" wx:for="{{tableList}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
-        <view class="flex_row flex_center">
-          <image src="/images/ic_table.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
-          <text class="title">{{item}}</text>
-        </view>
-        <image catchtap="doDeleteTable" data-item="{{item}}" src="/images/ic_delete.png" style="width: 5vw;height: 5vw;" mode="aspectFit"></image>
+      <view class="flex_row flex_center">
+        <image src="/images/ic_table.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
+        <text class="title">{{item}}</text>
       </view>
-      <button bindtap="doAddTable" class="btn_add">添加表</button>
+      <image catchtap="doDeleteTable" data-item="{{item}}" src="/images/ic_delete.png" style="width: 5vw;height: 5vw;" mode="aspectFit"></image>
+    </view>
+    <button bindtap="doAddTable" class="btn_add">添加表</button>
   </view>
-  <view wx:if="{{mode == 2}}">
+  <view wx:elif="{{mode == 2}}">
     <!-- 表结构列表 -->
-    <view wx:if="{{submode == 0}}" bindtap="doOpenSub" data-item="{{item}}" wx:for="{{tableMenu}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
+    <view wx:if="{{submode == 0}}">
+      <view bindtap="doOpenSub" data-item="{{item}}" wx:for="{{tableMenu}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
         <view class="flex_row flex_center">
           <image src="/images/ic_table.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
           <text class="title">{{item.title}}</text>
         </view>
-        <image  data-item="{{item}}" src="/images/ic_right.png" style="width: 3vw;height: 3vw;" mode="aspectFit"></image>
-      </view> 
-  </view>
-  <view wx:else>
+        <image data-item="{{item}}" src="/images/ic_right.png" style="width: 3vw;height: 3vw;" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view wx:else>
       <!-- 数据 -->
       <view wx:if="{{curSubItem.type == 'data'}}">
-
+        <view style="width: 96vw;margin-top: 5vw">
+          <table table="{{tableDataShow}}" typeset="{{curTypeSet}}" ></table>
+        </view>
       </view>
       <view wx:elif="{{curSubItem.type == 'set'}}">
-
-      </view> 
+        <view style="width: 96vw;margin-top: 5vw;">
+          <table table="{{tableDataShow}}"  typeset="{{curTypeSet}}" bind:addValue="doAddSetValue"></table>
+        </view>
+      </view>
       <view wx:elif="{{curSubItem.type == 'index'}}">
 
-      </view> 
-  </view>
+      </view>
+    </view>
+  </view> 
+  <view style="height: 5vh;width: 100vw;"></view>
 </view>
 <view class="flex_column flex_vcenter connect_back" wx:else>
   <form bindsubmit="doConnect">
     <input style="margin-top: 30vw;" name="workspace" placeholder="请输入数据路径" value="{{curPath}}" />
     <button form-type="submit">连接</button>
-  </form> 
+  </form>
 </view>

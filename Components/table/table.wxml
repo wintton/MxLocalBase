@@ -1,6 +1,14 @@
 <!--Components/table/table.wxml--> 
+<view hidden="{{!dialog.show}}">
+  <dialog dialog="{{dialog}}" showanim="{{showAnmi}}"></dialog>
+</view>
 <view class="dialog_content {{showHint?'show':''}} flex_column flex_center" >
   <text bindtap="doCopy"   style="width: 70vw;font-size: 15px;">{{showHint}}</text>
+</view>
+<view class="flex_row flex_vcenter" style="padding: 5vw 0">
+  <image bindtap="doAdd" src="/images/ic_add_{{add}}.png" mode="aspectFit" class="opera_img"></image>
+  <image bindtap="doReduce" src="/images/ic_reduce_{{reduce}}.png" mode="aspectFit" class="opera_img"></image>
+  <image bindtap="doSave" src="/images/ic_yes_{{yes}}.png" mode="aspectFit" class="opera_img"></image>
 </view>
 <view class="flex_row">
   <view class="flex_row" style="width: 6vw;background: #efefef;position: absolute;height: 100%;">
@@ -10,9 +18,16 @@
     <block wx:if="{{table.length > 0}}">
       <view bindtap="doChangeCurIndex" data-index="{{index}}" wx:for="{{table}}" wx:key="index" class="table_row flex_row flex_vcenter">
         <view bindlongpress="doShowData" data-data="{{each}}" wx:for="{{item}}" wx:key="each" wx:for-item="each" wx:for-index="i" class="flex_column flex_center">
-          <text class="table_cell">{{each}}</text>
-        </view>
+          <view class="table_cell flex_column flex_center">{{each}}</view>
+        </view> 
       </view>
+      <block wx:if="{{addTemp}}">
+        <view bindtap="doChangeCurIndex" data-index="{{table.length}}" class="table_row flex_row flex_vcenter">
+          <view catchtap="doChangeAddValue" data-index="{{index}}" wx:for="{{addTemp}}" wx:key="each"  class="flex_column flex_center">
+            <view class="table_cell flex_column flex_center">填写</view>
+          </view>
+        </view>
+      </block>
     </block>
     <block wx:else>
       <text style="font-size: 17px;color: #afadad;">暂无数据</text>

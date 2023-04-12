@@ -1,5 +1,6 @@
 // pages/mxbaseutil/mxbaseutil.js 
 import Connect from "../../mxbase/bin/Connect";
+import Table from "../../mxbase/bin/Table";
 let basePath = `${wx.env.USER_DATA_PATH}/`;
 var curConn;
 Page({
@@ -16,6 +17,7 @@ Page({
     showAnmi:false,
     submode:0,
     curSubItem:{},
+    curTypeSet:{},
     dialog:{
       show:false,
       title:"提示",
@@ -73,7 +75,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-      initConnect(this);
+      // initConnect(this);
+      let table = new Table(wx.getFileSystemManager(),"userinfo2",basePath + "mxbase/test");
+      table.connect(); 
+      console.log(table);
   },
 
   /**
@@ -253,7 +258,8 @@ Page({
     }
     this.setData({
       mode,
-      submode
+      submode,
+      curSubItem:{}
     })
   },
   //删除数据表
@@ -288,8 +294,21 @@ Page({
     }
     this.setData({
       curSubItem:item,
-      submode:1
+      submode:1,
     })
+  },
+  doAddSetValue(res){
+    try{
+      wx.showLoading({
+        title: '添加中',
+      })
+      curConn.doAddTableSet(res.detail);
+      wx.hideLoading();
+      showHintModle("添加成功");
+    } catch (e){
+      console.log(e)
+      showHintModle(e);
+    }
   }
 })
 
@@ -298,7 +317,54 @@ function doSelectTableData(that){
 }
 
 function doSelectTableSet(that){
-  
+  let tableDataShow = [
+    ["name","type","default","increment","notNull","primaryKey","uni","comment"]
+  ]; 
+  let curTypeSet = {
+    "name":{
+      type:"string",
+      default:"",
+      notNull:true,
+    },
+    "type":{
+      type:"select",
+      default:"string",
+      options:[
+        "string",
+        "number",
+        "object",
+        "boolean" 
+      ]
+    },
+    "default":{
+      type:"string",
+      default:""
+    },
+    "increment":{
+      type:"boolean",
+      default:false
+    },
+    "notNull":{
+      type:"boolean",
+      default:false
+    },
+    "primaryKey":{
+      type:"boolean",
+      default:false
+    },
+    "uni":{
+      type:"boolean",
+      default:false
+    },
+    "comment":{
+      type:"string",
+      default:""
+    },
+  }
+  that.setData({
+    tableDataShow,
+    curTypeSet
+  })
 }
 
 function doSelectTableIndex(that){

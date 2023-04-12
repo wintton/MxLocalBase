@@ -10,10 +10,10 @@
 
 .table_cell{
   background: #ffffff;
-  width: 15vw;
+  width: 20vw;
   height: 8vw;
   padding: 2vw;
-  font-size: 15px;
+  font-size: 13px;
   text-align: center;
   color: #333333;
   border-right: 1px solid #333333;
@@ -41,4 +41,10 @@
 .dialog_content.show{
   opacity: 1;
   transform: scale(1);
+}
+
+.opera_img{
+  width: 5vw;
+  height: 5vw; 
+  padding: 0 3vw;
 }

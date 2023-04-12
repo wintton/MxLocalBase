@@ -1,4 +1,4 @@
-<!--Components/Dialog/Dialog.wxml-->
+<!--Components/Dialog/Dialog.wxml--> 
 <view bindtap="doConcel" class="dialog_back"> 
     <view catchtap="doNothing" class="content  flex_column flex_center {{showanim?'anim_show':''}}"> 
       <view class="title">{{dialog.title}}</view> 
@@ -9,8 +9,19 @@
         <view wx:for="{{dialog.content}}" wx:key="item" class="item_back flex_row flex_vcenter flex_space" >
           <view class="left">{{item.title}}</view>
           <view class="right">
-            <block v-if="{{item.type == 'input'}}">
+            <block wx:if="{{!item.type || item.type == 'input' || item.type == 'string'}}">
               <input class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
+            </block>
+            <block wx:if="{{item.type == 'number'}}">
+              <input type="digit" class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
+            </block>
+            <block wx:if="{{item.type == 'boolean'}}">
+              <switch style="zoom: 0.8;padding: 5px 0;" checked="{{item.value}}" data-name="{{item.name}}" bindchange="doGetInput"/>
+            </block>
+            <block wx:if="{{item.type == 'select'}}">
+              <picker bindinput="doGetInput" data-name="{{item.name}}" data-item="{{item}}" mode="selector" range="{{item.options}}">
+                <input disabled class="input"  value="{{item.value}}" placeholder="{{item.hint}}" /> 
+              </picker>
             </block>
           </view>
         </view>

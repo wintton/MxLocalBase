@@ -27,7 +27,12 @@ Component({
     },
     doGetInput(res){
       let name = res.currentTarget.dataset.name;
-      this.data.dataValue[name] = res.detail.value;
+      let item = res.currentTarget.dataset.item; 
+      if(item && item.type == "select"){
+        this.data.dataValue[name] = item.options[res.detail.value];
+      } else {
+        this.data.dataValue[name] = res.detail.value;
+      }
     },
     doConfirm(res){
       let dialog = this.data.dialog;
@@ -38,7 +43,7 @@ Component({
       let dataValue = this.data.dataValue;
       let content = dialog.content;
       for(let item of content){
-        if(item.must && !dataValue[item.name]){
+        if(item.must &&  typeof dataValue[item.name] == "undefined"){
           showHintModle(item.hint || (item.title + "不能为空"));
           return;
         }
