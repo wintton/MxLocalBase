@@ -45,16 +45,24 @@
       <!-- 数据 -->
       <view wx:if="{{curSubItem.type == 'data'}}">
         <view style="width: 96vw;margin-top: 5vw">
-          <table table="{{tableDataShow}}" typeset="{{curTypeSet}}" ></table>
+          <text style="font-size: 13px;color:#6e6e6e;">{{operaHint}}</text>
+          <table bindselItem="doSelItem" binddeleteItem="doDeleteData" bindeditItem="doEditData" table="{{tableDataShow}}" typeset="{{curTypeSet}}" ></table>
         </view>
       </view>
       <view wx:elif="{{curSubItem.type == 'set'}}">
         <view style="width: 96vw;margin-top: 5vw;">
-          <table table="{{tableDataShow}}"  typeset="{{curTypeSet}}" bind:addValue="doAddSetValue"></table>
+          <table  table="{{tableDataShow}}"  typeset="{{curTypeSet}}" bindaddValue="doAddSetValue" binddeleteItem="doDeleteSetValue"></table>
         </view>
       </view>
       <view wx:elif="{{curSubItem.type == 'index'}}">
-
+        <view data-item="{{item}}" wx:for="{{tableDataShow}}" wx:key="index" class="database_back flex_row flex_vcenter flex_space">
+          <view class="flex_row flex_center">
+            <image src="/images/ic_table.png" style="width: 7vw;height: 7vw;" mode="aspectFit"></image>
+            <text class="title">{{item}}</text>
+          </view>
+          <image catchtap="doDeleteIndex" data-item="{{item}}" src="/images/ic_delete.png" style="width: 5vw;height: 5vw;" mode="aspectFit"></image>
+        </view>
+        <button bindtap="doAddIndex" class="btn_add">添加索引</button>
       </view>
     </view>
   </view> 

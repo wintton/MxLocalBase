@@ -15,7 +15,7 @@ Component({
     showAnmi:false,
     curIndex:0,
     add:1,
-    reduce:1,
+    reduce:0,
     yes:0,
     addTemp:[],
     curTempIndex:0,
@@ -122,8 +122,8 @@ Component({
           if (res.cancel) {
             
           } 
-          if (res.confirm) {
-            that.triggerEvent("editItem",{},that.data.curIndex)
+          if (res.confirm) { 
+            that.triggerEvent("deleteItem",that.data.curIndex)
           }
         }
       })
@@ -139,6 +139,16 @@ Component({
         data:that.data.showHint
       })
     },
+    doSelCellValue(res){
+      let index = res.currentTarget.dataset.index;
+      let each = res.currentTarget.dataset.each;
+      let value = res.currentTarget.dataset.value;
+      this.triggerEvent("selItem",{
+        column:each,
+        row:index,
+        value
+      })
+    },
     doShowMenu(){
       let that = this; 
       wx.showActionSheet({
@@ -146,11 +156,11 @@ Component({
         success:res => {
           switch(res.tapIndex){
             case 0:{
-              that.triggerEvent("editItem",{},that.data.curIndex)
+              that.triggerEvent("editItem",that.data.curIndex)
             }
             break;
             case 1:{
-              that.triggerEvent("deleteItem",{},that.data.curIndex)
+              that.triggerEvent("deleteItem",that.data.curIndex)
             }
             break;
           }

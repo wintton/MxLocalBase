@@ -10,17 +10,17 @@
           <view class="left">{{item.title}}</view>
           <view class="right">
             <block wx:if="{{!item.type || item.type == 'input' || item.type == 'string'}}">
-              <input class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
+              <input class="input" disabled="{{item.disabled}}" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
             </block>
             <block wx:if="{{item.type == 'number'}}">
-              <input type="digit" class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
+              <input type="digit" disabled="{{item.disabled}}" class="input" bindinput="doGetInput" data-name="{{item.name}}"  value="{{item.value}}" placeholder="{{item.hint}}" />
             </block>
             <block wx:if="{{item.type == 'boolean'}}">
-              <switch style="zoom: 0.8;padding: 5px 0;" checked="{{item.value}}" data-name="{{item.name}}" bindchange="doGetInput"/>
+              <switch style="zoom: 0.8;padding: 5px 0;" disabled="{{item.disabled}}" checked="{{item.value}}" data-name="{{item.name}}" bindchange="doGetInput"/>
             </block>
             <block wx:if="{{item.type == 'select'}}">
-              <picker bindinput="doGetInput" data-name="{{item.name}}" data-item="{{item}}" mode="selector" range="{{item.options}}">
-                <input disabled class="input"  value="{{item.value}}" placeholder="{{item.hint}}" /> 
+              <picker bindchange="doGetInput" disabled="{{item.disabled}}" data-name="{{item.name}}" data-item="{{item}}" mode="selector" range="{{item.options}}">
+                <input disabled class="input"  value="{{dataValue[item.name] || item.value}}" placeholder="{{item.hint}}" /> 
               </picker>
             </block>
           </view>

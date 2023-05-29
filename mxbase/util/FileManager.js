@@ -159,8 +159,8 @@ class FileManager {
     this.manager.unlink(options);
   }
 
-  unlink(options){
-    this.manager.unlink(options.filePath);
+  unlinkSync(options){
+    this.manager.unlinkSync(options.filePath);
   }
 
   unzip(options){
@@ -181,8 +181,7 @@ class FileManager {
  
   writeSync(options){
     this.manager.writeSync(options);
-  }  
-
+  }   
   
 
 }

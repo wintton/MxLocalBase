@@ -1,10 +1,15 @@
+import { log } from "../util/util";
 import Table from "./Table";
 class DataBase {
   
+  tableMap = {}
+  tableList = []
+
   constructor(manager,databaseName,BasePath){
     this.fileManmgerObject = manager; 
     this.databaseName = databaseName;
     this.BasePath = BasePath; 
+    this.loadTableList();
   }
 
   get CurPath(){
@@ -17,121 +22,78 @@ class DataBase {
 
   createTable(tableName,options){ 
     let tablePath = this.CurPath + "/" + tableName;
+    if(this.tableMap[tableName]){
+      throw("已存在数据表：" + tableName + " 请勿重复创建")
+    }
     try{
-      this.fileManmger.accessSync(tablePath);
-      throw("数据表:" + tableName + " 已存在，请勿重复创建"); 
-    } catch (e){ 
-      console.log(e) 
       this.fileManmger.mkdirSync({dirPath:tablePath, recursive:true});  
       this.fileManmger.mkdirSync({dirPath:tablePath + "/set", recursive:true});  
       this.fileManmger.mkdirSync({dirPath:tablePath + "/data", recursive:true});  
       this.fileManmger.mkdirSync({dirPath:tablePath + "/index", recursive:true});  
-      if(options){
-        this.tableName = tableName;
-        this.setTableOptions(options);
-      }
+      if(options){ 
+        this.setTableOptions(tableName,options);
+      } 
+      this.tableMap[tableName] = new Table(this.fileManmger,tableName,this.CurPath);
+    } catch (e){ 
+      console.log(e)  
     } 
   }
 
-  selectTable(tableName){
-    if(tableName){
-      this.tableName = tableName;
+  loadTableList(){
+    let tableList = [];
+    try{
+      tableList = this.fileManmger.readdirSync({dirPath:this.CurPath});
+    } catch(e) {
+      log(e);
     }
-    if(this.tableName){
-      if(!this.curTable){
-        this.curTable = new Table(this.fileManmger,this.tableName,this.CurPath);
-      }
+    for(let tableName of tableList){
+        this.tableMap[tableName] = new Table(this.fileManmger,tableName,this.CurPath);
     }
-    return typeof this.tableName == "string";
+    this.tableList = tableList;
+  } 
+
+  setTableOptions(tableName,options){
+    this.tryConnectTable(tableName);
+    this.tableMap[tableName].setTableOptions(options);
   }
 
-  setTableOptions(options){
-    if(!this.selectTable()){
-      throw("当前未选择数据库")
+  tryConnectTable(tableName){
+    if(!this.tableMap[tableName]){
+      throw("不存在数据表：" + tableName)
     }
-    let setJson = {};
-    if(!options.column || typeof options.column[0] != "object"){
-      throw("错误的列表设置"); 
+    if(!this.tableMap[tableName].isConnect){
+      this.tableMap[tableName] = new Table(this.fileManmger,tableName,this.CurPath);
     }
-    let hasPrimaryKey = false;
-    for(let item of options.column){
-        if(!item.name){
-          throw("列表必须含有name字段"); 
-        } 
-        if(item.autoIncrement && item.type != "number"){
-          throw("自动增加类型只能为数字"); 
-        } 
-        if(item.primaryKey ){
-          if(hasPrimaryKey){
-            throw("主键仅能有一个字段"); 
-          }
-          hasPrimaryKey = true;
-        } 
-        setJson[item.name] = {
-          name:item.name,
-          defaultValue:item.defaultValue || undefined,
-          autoIncrement:item.autoIncrement || false,
-          comment:item.comment || "无",
-          type:item.type || "any",
-          notNull:item.notNull,
-          primaryKey:item.primaryKey || false,
-          uni:item.uni
-        };
-    } 
-    this.fileManmger.writeFileSync({
-      filePath:this.CurTablePath + "/set/set.json",
-      data:setJson,
-      encoding:"utf-8"
-    })
+    return this.tableMap[tableName];
   }
 
   get fileManmger(){
     return this.fileManmgerObject;
   }
 
-  doAddTableSet(itemSet){ 
-    if(!this.selectTable()){
-      throw("当前未选择数据库")
-    }
-    return this.curTable.doAddTableSet(itemSet);
+  doAddTableSet(tableName,itemSet){ 
+    this.tryConnectTable(tableName);
+    return this.tableMap[tableName].addTableSet(itemSet);
   }
    
-  showTables(){ 
-    try{ 
-      return this.fileManmger.readdirSync({dirPath:this.CurPath});
-    } catch(e){
-      console.log(e)
-    }
-    return [];
+  showTables(){  
+    return this.tableList;
   }
   
   deleteTable(tableName){ 
     let tablePath = this.CurPath + "/" + tableName;
-    try{
-      this.fileManmger.accessSync(tablePath);
-    } catch (e){ 
-      console.log(e)
+    if(!this.tableMap[tableName]){
       throw("数据表:" + tableName + " 不存在"); 
-    }
+    } 
     this.fileManmger.rmdirSync({dirPath:tablePath,recursive:true}); 
-    if(this.tableName == tableName){
-      this.tableName = "";
-      this.curTable = "";
-    }
+    this.tableMap[tableName] = {};
+    delete this.tableMap[tableName];
+    this.tableList.splice(this.tableList.indexOf(tableName),1);
   }
 
   doShowTableSet(tableName){
-    let tablePath = this.CurPath + "/" + tableName;
-    try{
-      this.fileManmger.accessSync(tablePath);
-    } catch (e){ 
-      console.log(e)
-      throw("数据表:" + tableName + " 不存在"); 
-    }
-    if(this.tableName != tableName){
-      selectTable(tableName);
-    }
-    return this.database.curTable.CurSetJson;
+    this.tryConnectTable(tableName);
+    return this.tableMap[tableName].setJson.data;
   }
 
 }

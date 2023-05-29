@@ -16,8 +16,7 @@ Component({
    */
   data: {
     dataValue:{}
-  },
-
+  }, 
   /**
    * 组件的方法列表
    */
@@ -26,13 +25,20 @@ Component({
 
     },
     doGetInput(res){
+      let that = this;
       let name = res.currentTarget.dataset.name;
       let item = res.currentTarget.dataset.item; 
-      if(item && item.type == "select"){
-        this.data.dataValue[name] = item.options[res.detail.value];
-      } else {
-        this.data.dataValue[name] = res.detail.value;
+      if(!name){
+        return;
       }
+      if(item && item.type == "select"){
+        that.data.dataValue[name] = item.options[res.detail.value];  
+      } else {
+        that.data.dataValue[name] = res.detail.value;
+      } 
+      that.setData({
+        dataValue:that.data.dataValue
+      })
     },
     doConfirm(res){
       let dialog = this.data.dialog;
@@ -49,15 +55,35 @@ Component({
         }
       }
       typeof dialog.success == "function" && dialog.success(dataValue);
+      this.setData({
+        dataValue:{}
+      })
     },
     doConcel(res){
       let dialog = this.data.dialog; 
       typeof dialog.cancel == "function" && dialog.cancel(); 
+      this.setData({
+        dataValue:{}
+      })
     }
   },
   observers:{
-    showAnmi(newValue,OldVuew){
-      console.log(newValue,OldVuew)
+    showanim:function(newValue){
+      if(!newValue){
+        return;
+      }
+      let dataValue = this.data.dataValue;
+      let content = this.data.dialog.content;
+      console.log(content);
+      if(content){
+        for(let item of content){
+          console.log(item.name)
+          dataValue[item.name] = item.value;
+        }
+      }
+      this.setData({
+        dataValue
+      })
     }
   }
 })

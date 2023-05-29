@@ -18,7 +18,7 @@
     <block wx:if="{{table.length > 0}}">
       <view bindtap="doChangeCurIndex" data-index="{{index}}" wx:for="{{table}}" wx:key="index" class="table_row flex_row flex_vcenter">
         <view bindlongpress="doShowData" data-data="{{each}}" wx:for="{{item}}" wx:key="each" wx:for-item="each" wx:for-index="i" class="flex_column flex_center">
-          <view class="table_cell flex_column flex_center">{{each}}</view>
+          <view bindtap="doSelCellValue" data-index="{{index}}" data-each="{{i}}" data-value="{{each}}" class="table_cell flex_column flex_center">{{each}}</view>
         </view> 
       </view>
       <block wx:if="{{addTemp}}">

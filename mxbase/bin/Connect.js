@@ -8,18 +8,16 @@ class Connect {
     this.BasePath = BasePath;
     try{
       this.fileManmger.accessSync(BasePath);
-    } catch (e){ 
-      console.log(e)
+    } catch (e){  
       this.fileManmger.mkdirSync({dirPath:BasePath,recursive:true});
     }
-    this.connect = 1;
+    this.connect = 1; 
   }
 
   checkFileExsites(filePath){
     try{
       this.fileManmger.accessSync(filePath);
     } catch (e){
-      console.log(e)
       return false;
     }
     return true;
@@ -31,7 +29,7 @@ class Connect {
 
   isSelectDataBase(){
     if(this.databaseName){
-      if(!this.database){
+      if(!this.database || this.database.databaseName != this.databaseName){
         this.database = new DataBase(this.fileManmger,this.databaseName,this.BasePath);
       }
     }
@@ -81,14 +79,14 @@ class Connect {
     }
   }
 
-  selectTable(tableName){
+  tryConnectTable(tableName){
     if(!this.isConnect()){
       throw("当前数据库未连接");
     }
     if(!this.isSelectDataBase()){
       throw("当前未选择数据库");
     }  
-    this.database.selectTable(tableName)
+    return this.database.tryConnectTable(tableName);
   }
 
   showDataBases(){
@@ -104,18 +102,18 @@ class Connect {
     }
     if(!this.isSelectDataBase()){
       throw("当前未选择数据库");
-    }  
+    }   
     return this.database.showTables();
   }
 
-  doAddTableSet(itemSet){
+  doAddTableSet(tableName,itemSet){
     if(!this.isConnect()){
       throw("当前数据库未连接");
     }
     if(!this.isSelectDataBase()){
       throw("当前未选择数据库");
     }  
-    return this.database.doAddTableSet(itemSet);
+    return this.database.doAddTableSet(tableName,itemSet);
   }
 
   getCurDataBase(){
@@ -159,9 +157,8 @@ class Connect {
   }
 
   closeConnect(){
-    this.connect = 0;
-  }
-  
+    this.connect = 0; 
+  }  
 
 }
 
